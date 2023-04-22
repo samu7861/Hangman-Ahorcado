@@ -1,0 +1,1 @@
+const words = ["Radio", "Antebrazo", "Cuchillo", "Pariente", "Droga", "Estallar", "Alma", "Singular", "Pararse", "Cine"]

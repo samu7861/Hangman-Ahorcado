@@ -49,11 +49,70 @@ const drawWord = () => {
     });
 };
 
+//evento escritura
+const letterEvent = event => {
+    let newLetter = event.key.toUpperCase();
+    if(newLetter.match(/^[a-zñ]$/i) && !usedLetters.includes(newLetter)) {
+        letterInput(newLetter);
+    };
+};
+
+//entrada de letras
+const letterInput = letter => {
+    if(selectedWord.includes(letter)) {
+        correctLetter(letter);
+    } else {
+        wrongLetter();
+    }
+    addLetter(letter);
+    usedLetters.push(letter);
+};
+
+//palabra correcta
+const correctLetter = letter => {
+    const { children } =  wordContainer;
+    for(let i = 0; i < children.length; i++) {
+        if(children[i].innerHTML === letter) {
+            children[i].classList.toggle('hidden');
+            hits++;
+        }
+    }
+    if(hits === selectedWord.length) endGame();
+}
+
+// fin del juego
+const endGame = () => {
+    document.removeEventListener('keydown', letterEvent);
+    startButton.style.display = 'block';
+}
+
+//palabra incorrecta
+const wrongLetter = () => {
+    addBodyPart(bodyParts[mistakes]);
+    mistakes++;
+    if(mistakes === bodyParts.length) endGame();
+}
+
+//cuerpo
+const addBodyPart = bodyPart => {
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(...bodyPart);
+};
+
+
+
 //función palabra aleatoria
 const selectRandomWord = () => {
     let word = words[Math.floor((Math.random() * words.length))].toUpperCase();
     selectedWord = word.split('');
 };
+
+//addletter
+const addLetter = letter => {
+    const letterElement = document.createElement('span');
+    letterElement.innerHTML = letter.toUpperCase();
+    usedLettersElement.appendChild(letterElement);
+}
 
 
 //función inicio de juego y llamado de evento
